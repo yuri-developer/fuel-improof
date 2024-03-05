@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 
 export const dispenseTokens = async (address: string, captcha: string) => {
   const requestData = {
@@ -23,7 +23,6 @@ export const dispenseTokens = async (address: string, captcha: string) => {
 
     return response;
   } catch (error) {
-    console.error("Ошибка при отправке запроса:", error);
     throw error;
   }
 };

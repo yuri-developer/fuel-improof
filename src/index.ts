@@ -32,12 +32,25 @@ const createFuelWallet = (countWallets: number) => {
 const FaucetModule = async () => {
   for (const private_key of privateKeys) {
     const wallet = Wallet.fromPrivateKey(private_key);
+
+    console.log(`\nНачинаю работу с кошельком ${wallet.address}`);
+
     const captchaSolution = await solveCaptcha();
+
     console.log(`Запрашиваю кран для адреса ${wallet.address}..`);
 
-    const response = await dispenseTokens(`${wallet.address}`, captchaSolution);
-    if (response.data.status === "Success") {
-      console.log(`Адрес ${wallet.address} успешно обработан. Faucet: ${response.data.status}`);
+    try {
+      const response = await dispenseTokens(`${wallet.address}`, captchaSolution);
+
+      if (response.data.status === "Success") {
+        console.log(`Адрес ${wallet.address} успешно обработан. Faucet: ${response.data.status}`);
+        fs.appendFileSync("./data/result_success.txt", private_key + "\n");
+      } else {
+        fs.appendFileSync("./data/result_fail.txt", private_key + "\n");
+      }
+    } catch (error) {
+      console.error(`Ошибка обработки адреса ${wallet.address}. Уже запрашивал токены.`);
+      fs.appendFileSync("./data/result_fail.txt", private_key + "\n");
     }
   }
 
