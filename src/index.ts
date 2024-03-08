@@ -35,11 +35,11 @@ const FaucetModule = async () => {
 
     console.log(`\nНачинаю работу с кошельком ${wallet.address}`);
 
-    const captchaSolution = await solveCaptcha();
-
-    console.log(`Запрашиваю кран для адреса ${wallet.address}..`);
-
     try {
+      const captchaSolution = await solveCaptcha();
+
+      console.log(`Запрашиваю кран для адреса ${wallet.address}..`);
+
       const response = await dispenseTokens(`${wallet.address}`, captchaSolution);
 
       if (response.data.status === "Success") {
@@ -49,7 +49,9 @@ const FaucetModule = async () => {
         fs.appendFileSync("./data/result_fail.txt", private_key + "\n");
       }
     } catch (error) {
-      console.error(`Ошибка обработки адреса ${wallet.address}. Уже запрашивал токены.`);
+      console.error(
+        `Ошибка обработки адреса ${wallet.address}. Ошибка при решении капчи, либо аккаунт уже запрашивал токены.`,
+      );
       fs.appendFileSync("./data/result_fail.txt", private_key + "\n");
     }
   }
