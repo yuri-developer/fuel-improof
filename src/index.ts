@@ -1,5 +1,5 @@
-import { BN, Wallet, sleep } from "fuels";
-import fs from "fs";
+import { Wallet, sleep } from "fuels";
+import fs, { access } from "fs";
 
 import { entryPoint } from "./utils/menu.js";
 import solveCaptcha from "./utils/capcha.js";
@@ -11,6 +11,8 @@ import { transferAssets } from "./utils/transfer.js";
 import { isShuffleWallets, numWalletsToGenerate, pause, transactionCount, transferAmount } from "./config.js";
 import getBalance from "./utils/getBalance.js";
 import { decimals } from "./constants/constants.js";
+import { AccountInfo } from "./interfaces/AccountInfo.js";
+import { writeToCSV } from "./utils/writeToCSV.js";
 
 let privateKeys = getPrivateKeys();
 
@@ -100,13 +102,22 @@ const TransferModule = async (isToYourself: boolean) => {
 };
 
 const CheckBalance = async () => {
+  const AccountsInfo: AccountInfo[] = [];
+
   for (const privateKey of privateKeys) {
     try {
       const balance = await getBalance(privateKey);
       const wallet = Wallet.fromPrivateKey(privateKey);
-      console.log(`Balance ${wallet.address}: ${balance[0].amount.toNumber() / decimals}`);
-    } catch (error) {}
+      AccountsInfo.push({
+        address: wallet.address.toString(),
+        privateKey: wallet.privateKey.toString(),
+        balance: balance[0].amount.toNumber() / decimals,
+      });
+    } catch (error) {
+      console.log(`Error! Check balance`);
+    }
   }
+  writeToCSV(AccountsInfo);
 };
 
 async function startMenu() {
