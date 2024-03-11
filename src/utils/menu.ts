@@ -16,6 +16,10 @@ export const entryPoint = async () => {
           value: "faucet",
         },
         {
+          name: "Check balance",
+          value: "balance",
+        },
+        {
           name: "Tranfers to your wallet",
           value: "transferToYourself",
         },

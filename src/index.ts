@@ -1,4 +1,4 @@
-import { Wallet, sleep } from "fuels";
+import { BN, Wallet, sleep } from "fuels";
 import fs from "fs";
 
 import { entryPoint } from "./utils/menu.js";
@@ -9,6 +9,8 @@ import { getPrivateKeys } from "./utils/getPrivateKey.js";
 import { transferAssets } from "./utils/transfer.js";
 
 import { isShuffleWallets, numWalletsToGenerate, pause, transactionCount, transferAmount } from "./config.js";
+import getBalance from "./utils/getBalance.js";
+import { decimals } from "./constants/constants.js";
 
 let privateKeys = getPrivateKeys();
 
@@ -60,8 +62,8 @@ const FaucetModule = async () => {
 };
 
 const TransferModule = async (isToYourself: boolean) => {
-  for (const private_key of privateKeys) {
-    const wallet = Wallet.fromPrivateKey(private_key);
+  for (const privateKey of privateKeys) {
+    const wallet = Wallet.fromPrivateKey(privateKey);
 
     const randomTransactionCount = getRandomInt(transactionCount[0], transactionCount[1]);
 
@@ -97,6 +99,16 @@ const TransferModule = async (isToYourself: boolean) => {
   }
 };
 
+const CheckBalance = async () => {
+  for (const privateKey of privateKeys) {
+    try {
+      const balance = await getBalance(privateKey);
+      const wallet = Wallet.fromPrivateKey(privateKey);
+      console.log(`Balance ${wallet.address}: ${balance[0].amount.toNumber() / decimals}`);
+    } catch (error) {}
+  }
+};
+
 async function startMenu() {
   let mode = await entryPoint();
   switch (mode) {
@@ -105,6 +117,9 @@ async function startMenu() {
       break;
     case "faucet":
       await FaucetModule();
+      break;
+    case "balance":
+      await CheckBalance();
       break;
     case "transferToYourself":
       await TransferModule(true);

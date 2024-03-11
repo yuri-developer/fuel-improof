@@ -1,5 +1,6 @@
-import { Provider, Wallet, BaseAssetId, BN } from "fuels";
+import { Provider, Wallet, BaseAssetId } from "fuels";
 import { RPC_URLs } from "../constants/RPC.js";
+import { decimals } from "../constants/constants.js";
 
 export const transferAssets = async (
   senderPrivateKey: string,
@@ -17,7 +18,7 @@ export const transferAssets = async (
     };
 
     try {
-      const response = await sender.transfer(destinationAddress, amountToTransfer * 10 ** 9, BaseAssetId, txParams);
+      const response = await sender.transfer(destinationAddress, amountToTransfer * decimals, BaseAssetId, txParams);
       await response.wait();
 
       return true;
