@@ -1,31 +1,31 @@
-import inquirer from "inquirer";
+import inquirer from 'inquirer';
 
 export const entryPoint = async () => {
   const questions = [
     {
-      name: "choice",
-      type: "list",
-      message: "Действие:",
+      name: 'choice',
+      type: 'list',
+      message: 'Действие:',
       choices: [
         {
-          name: "Create New Wallets",
-          value: "createWallets",
+          name: 'Create New Wallets',
+          value: 'createWallets',
         },
         {
-          name: "Faucet",
-          value: "faucet",
+          name: 'Faucet',
+          value: 'faucet',
         },
         {
-          name: "Check balance",
-          value: "balance",
+          name: 'Check balance',
+          value: 'balance',
         },
         {
-          name: "Tranfers to your wallet",
-          value: "transferToYourself",
+          name: 'Tranfers to your wallet',
+          value: 'transferToYourself',
         },
         {
-          name: "Transfers to a random wallet",
-          value: "transferToRandom",
+          name: 'Transfers to a random wallet',
+          value: 'transferToRandom',
         },
       ],
       loop: false,

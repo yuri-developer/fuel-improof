@@ -1,10 +1,10 @@
 // количество кошельков для генерации
 export const numWalletsToGenerate: number = 3;
 
-export const capchaKey: string = "";
+export const capchaKey: string = '';
 
 // посмотри тут, как получить googleKey: https://2captcha.com/ru/2captcha-api#solving_recaptchav2_new
-export const googleKey: string = "";
+export const googleKey: string = '';
 
 export const isShuffleWallets: boolean = true;
 

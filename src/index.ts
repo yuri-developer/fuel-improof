@@ -1,18 +1,16 @@
-import { Wallet, sleep } from "fuels";
-import fs, { access } from "fs";
-
-import { entryPoint } from "./utils/menu.js";
-import solveCaptcha from "./utils/capcha.js";
-import { dispenseTokens } from "./utils/getTokens.js";
-import { getRandomInt, getRandomFloat, shuffle } from "./utils/random.js";
-import { getPrivateKeys } from "./utils/getPrivateKey.js";
-import { transferAssets } from "./utils/transfer.js";
-
-import { isShuffleWallets, numWalletsToGenerate, pause, transactionCount, transferAmount } from "./config.js";
-import getBalance from "./utils/getBalance.js";
-import { decimals } from "./constants/constants.js";
-import { AccountInfo } from "./interfaces/AccountInfo.js";
-import { writeToCSV } from "./utils/writeToCSV.js";
+import { isShuffleWallets, numWalletsToGenerate, pause, transactionCount, transferAmount } from './config.js';
+import { decimals } from './constants/constants.js';
+import { AccountInfo } from './interfaces/AccountInfo.js';
+import solveCaptcha from './utils/capcha.js';
+import getBalance from './utils/getBalance.js';
+import { getPrivateKeys } from './utils/getPrivateKey.js';
+import { dispenseTokens } from './utils/getTokens.js';
+import { entryPoint } from './utils/menu.js';
+import { getRandomInt, getRandomFloat, shuffle } from './utils/random.js';
+import { transferAssets } from './utils/transfer.js';
+import { writeToCSV } from './utils/writeToCSV.js';
+import fs from 'fs';
+import { Wallet, sleep } from 'fuels';
 
 let privateKeys = getPrivateKeys();
 
@@ -28,7 +26,7 @@ const createFuelWallet = (countWallets: number) => {
     privateKeys.push(privateKey);
   }
 
-  fs.appendFileSync("./data/new_private_keys.txt", privateKeys.map((key) => key + "\n").join(""));
+  fs.appendFileSync('./data/new_private_keys.txt', privateKeys.map((key) => key + '\n').join(''));
 
   console.log(`Создано кошельков: ${countWallets}. Проверяй в new_private_key.txt`);
 };
@@ -46,17 +44,17 @@ const FaucetModule = async () => {
 
       const response = await dispenseTokens(`${wallet.address}`, captchaSolution);
 
-      if (response.data.status === "Success") {
+      if (response.data.status === 'Success') {
         console.log(`Адрес ${wallet.address} успешно обработан. Faucet: ${response.data.status}`);
-        fs.appendFileSync("./data/result_success.txt", private_key + "\n");
+        fs.appendFileSync('./data/result_success.txt', private_key + '\n');
       } else {
-        fs.appendFileSync("./data/result_fail.txt", private_key + "\n");
+        fs.appendFileSync('./data/result_fail.txt', private_key + '\n');
       }
     } catch (error) {
       console.error(
         `Ошибка обработки адреса ${wallet.address}. Ошибка при решении капчи, либо аккаунт уже запрашивал токены.`,
       );
-      fs.appendFileSync("./data/result_fail.txt", private_key + "\n");
+      fs.appendFileSync('./data/result_fail.txt', private_key + '\n');
     }
   }
 
@@ -72,7 +70,7 @@ const TransferModule = async (isToYourself: boolean) => {
     for (let i = 0; i < randomTransactionCount; i++) {
       try {
         const randomAmount = getRandomFloat(transferAmount[0], transferAmount[1]);
-        let destinationAddress: string = "";
+        let destinationAddress: string = '';
 
         if (isToYourself) {
           destinationAddress = wallet.address.toString();
@@ -123,24 +121,24 @@ const CheckBalance = async () => {
 async function startMenu() {
   let mode = await entryPoint();
   switch (mode) {
-    case "createWallets":
+    case 'createWallets':
       createFuelWallet(numWalletsToGenerate);
       break;
-    case "faucet":
+    case 'faucet':
       await FaucetModule();
       break;
-    case "balance":
+    case 'balance':
       await CheckBalance();
       break;
-    case "transferToYourself":
+    case 'transferToYourself':
       await TransferModule(true);
       break;
-    case "transferToRandom":
+    case 'transferToRandom':
       await TransferModule(false);
       break;
   }
 
-  console.log("Работа окончена");
+  console.log('Работа окончена');
 }
 
 await startMenu();

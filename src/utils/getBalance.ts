@@ -1,5 +1,5 @@
-import { Provider, Wallet } from "fuels";
-import { RPC_URLs } from "../constants/RPC.js";
+import { RPC_URLs } from '../constants/RPC.js';
+import { Provider, Wallet } from 'fuels';
 
 const getBalance = async (privateKey: string) => {
   try {

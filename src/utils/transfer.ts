@@ -1,6 +1,6 @@
-import { Provider, Wallet, BaseAssetId } from "fuels";
-import { RPC_URLs } from "../constants/RPC.js";
-import { decimals } from "../constants/constants.js";
+import { RPC_URLs } from '../constants/RPC.js';
+import { decimals } from '../constants/constants.js';
+import { Provider, Wallet, BaseAssetId } from 'fuels';
 
 export const transferAssets = async (
   senderPrivateKey: string,
@@ -23,11 +23,11 @@ export const transferAssets = async (
 
       return true;
     } catch (transferError) {
-      console.error("Error during transfer:", transferError);
+      console.error('Error during transfer:', transferError);
       return false;
     }
   } catch (error) {
-    console.error("Error setting up transfer:", error);
+    console.error('Error setting up transfer:', error);
     return false;
   }
 };
