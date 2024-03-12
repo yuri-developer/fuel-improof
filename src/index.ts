@@ -112,7 +112,7 @@ const CheckBalance = async () => {
         balance: balance[0].amount.toNumber() / decimals,
       });
     } catch (error) {
-      console.log(`Error! Check balance`);
+      console.log(`Error! Check balance`, error);
     }
   }
   writeToCSV(AccountsInfo);
