@@ -109,7 +109,7 @@ const CheckBalance = async () => {
       AccountsInfo.push({
         address: wallet.address.toString(),
         privateKey: wallet.privateKey.toString(),
-        balance: balance[0].amount.toNumber() / decimals,
+        balance: balance[0]?.amount.toNumber() / decimals,
       });
     } catch (error) {
       console.log(`Error! Check balance`, error);
